@@ -7,6 +7,7 @@ use frontend\models\MessageCreate;
 use Yii;
 use common\models\Message;
 use frontend\models\MessageSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,22 @@ class MessageController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+            'class' => AccessControl::className(),
+            'only' => ['index', 'create'],
+            'rules' => [
+                    [
+                        'actions' => [ 'index'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['create', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];

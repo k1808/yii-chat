@@ -18,15 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Message', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions'=>function ($model, $key, $index, $grid){
+            $class='';
+            if($model->user->username === 'admin'){
+               $class = 'admin-msg';
+            }
+          return [
+            'key'=>$key,
+            'index'=>$index,
+            'class'=>$class
+          ];
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -35,17 +43,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => function ($data) {
                         return $data->user->username;
                     },
+
                     'filter'=>ArrayHelper::map($user, 'id', 'username')
             ],
 
             'messages:ntext',
             'creation_time',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
     <?php Pjax::end(); ?>
+    <?php if (\Yii::$app->user->can('createPost')) {?>
 
 </div>
 <div class="message-form">
@@ -61,3 +71,4 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php }?>
