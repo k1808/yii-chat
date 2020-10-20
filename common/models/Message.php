@@ -33,6 +33,8 @@ class Message extends \yii\db\ActiveRecord
         return [
             [['creation_time'], 'safe'],
             [['user_id', 'disabled'], 'integer'],
+            [['messages'], 'required'],
+            [['messages'], 'trim'],
             [['messages'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -60,5 +62,14 @@ class Message extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public static function create($messages){
+        $message = new static();
+        $message->messages = $messages;
+        $message->creation_time = date('Y-m-d H:i:s');
+        $message->user_id =  Yii::$app->user->identity->id;
+        $message->save();
+        return $message;
     }
 }
