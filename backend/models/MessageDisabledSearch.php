@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models;
+namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -9,7 +9,7 @@ use common\models\Message;
 /**
  * MessageSearch represents the model behind the search form of `common\models\Message`.
  */
-class MessageSearch extends Message
+class MessageDisabledSearch extends Message
 {
     /**
      * {@inheritdoc}
@@ -40,20 +40,12 @@ class MessageSearch extends Message
      */
     public function search($params)
     {
-        $query = Message::find()->where(['disabled'=>1]);
+        $query = Message::find()->where(['disabled'=>0]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 5,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'creation_time' => SORT_ASC
-                ]
-            ]
         ]);
 
         $this->load($params);
@@ -66,7 +58,10 @@ class MessageSearch extends Message
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'id' => $this->id,
+            'creation_time' => $this->creation_time,
             'user_id' => $this->user_id,
+            'disabled' => $this->disabled,
         ]);
 
         $query->andFilterWhere(['like', 'messages', $this->messages]);

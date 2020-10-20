@@ -61,6 +61,8 @@
                         ],
                     ],
                     ['label' => 'User', 'icon' => 'user', 'url' => ['user/index']],
+                    ['label' => 'Message', 'icon' => 'commenting', 'url' => ['message/index']],
+                    ['label' => 'Disable message', 'icon' => 'commenting-o', 'url' => ['message/disabled']],
                 ],
             ]
         ) ?>
