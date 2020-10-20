@@ -60,6 +60,7 @@
                             ],
                         ],
                     ],
+                    ['label' => 'User', 'icon' => 'user', 'url' => ['user/index']],
                 ],
             ]
         ) ?>
